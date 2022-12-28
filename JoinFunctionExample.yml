@@ -6,4 +6,4 @@ Resources:
       ImageId: ami-06878d265978313ca # Ubuntu 22.04 amd64 AMI in us-east-1
       Tags:
         - Key: Name
-          !Join [ " ", [ "Este", "nombre", "está", "compuesto", "por", "Join", "Function" ] ]
+          Name: !Join [ " ", [ "Este", "nombre", "está", "compuesto", "por", "Join", "Function" ] ]
