@@ -8,7 +8,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       InstanceType: t3.micro
-      ImageId: !FindInMap [ RegionMap, !Ref "AWS::Region", AmiUbuntu2204 ] # Ubuntu 22.04 amd64 AMI in us-east-1
+      ImageId: !FindInMap [ RegionMap, !Ref AWS::Region, AmiUbuntu2204 ] # Ubuntu 22.04 amd64 AMI in us-east-1
       Tags:
         - Key: Name
           Value: My first EC2 instance using CloudFormation
