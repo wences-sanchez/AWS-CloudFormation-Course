@@ -1,0 +1,27 @@
+Parameters:
+  NameOfService:
+    Description: The name of the service this stack is to be used for.
+    Type: String
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access into the server
+    Type: AWS::EC2::KeyPair::KeyName
+
+Mappings:
+  RegionMap:
+    us-east-1:
+      AmiUbuntu2204: ami-06878d265978313ca
+
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      ImageId: !FindInMap [ RegionMap, !Ref "AWS::Region", AmiUbuntu2204 ]
+      KeyName: !Ref KeyName
+      Tags:
+        - Key: Name
+          Value: !Ref NameOfService
+
+Outputs:
+  ServerDns:
+    Value: !GetAtt MyEC2Instance.DNSName
