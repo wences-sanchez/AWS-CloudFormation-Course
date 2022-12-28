@@ -18,7 +18,8 @@ Resources:
       InstanceType: t3.micro
       ImageId: !FindInMap [ RegionMap, !Ref AWS::Region, AmiUbuntu2204 ]
       KeyName: !Ref KeyName
-      SecurityGroups: !Ref WebServerSecurityGroup
+      SecurityGroups:
+        - !Ref WebServerSecurityGroup
       Tags:
         - Key: Name
           Value: !Ref NameOfService
