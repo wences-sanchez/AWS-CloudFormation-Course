@@ -28,7 +28,7 @@ Resources:
     Properties:
       GroupDescription: Security Group created for a Web Server
       SecurityGroupIngress:
-        - CidrIp: 0.0.0.0./0
+        - CidrIp: 0.0.0.0/0
           IpProtocol: tcp
           FromPort: 80
           ToPort: 80
