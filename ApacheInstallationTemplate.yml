@@ -1,0 +1,33 @@
+Parameters:
+  NameOfService:
+    Description: Name your instance
+    Type: String
+  KeyName:
+    Description: Choose your KeyPair
+    Type: AWS::EC2::KeyPair::KeyName
+
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      KeyName: !Ref KeyName
+      SecurityGroups: !Ref WebServerSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Ref NameOfService
+
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group created for a Web Server
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0./0
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+        - CidrIp: !Ref SSHLocation
+          IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+
