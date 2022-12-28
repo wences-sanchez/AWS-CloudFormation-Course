@@ -7,6 +7,8 @@ Resources:
       Tags:
         - Key: Name
           Value: My first EC2 instance using CloudFormation
+      SecurityGroups:
+        - !Ref MySecurityGroup
   MySecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
