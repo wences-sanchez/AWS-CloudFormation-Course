@@ -6,11 +6,17 @@ Parameters:
     Description: Choose your KeyPair
     Type: AWS::EC2::KeyPair::KeyName
 
+Mappings:
+  RegionMap:
+    us-east-1:
+      AmiUbuntu2204: ami-06878d265978313ca
+
 Resources:
   MyEC2Instance:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t3.micro
+      ImageId: !FindInMap [ RegionMap, !Ref AWS::Region, AmiUbuntu2204 ]
       KeyName: !Ref KeyName
       SecurityGroups: !Ref WebServerSecurityGroup
       Tags:
