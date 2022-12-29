@@ -18,37 +18,9 @@ Mappings:
 Resources:
   MyEC2Instance:
     Type: AWS::EC2::Instance
-    Metadata:
-      AWS::CloudFormation::Init:
-        config:
-          packages:
-            apt:
-              apache2: []
-          files:
-            /var/www/wences/:
-              owner: "root"
-              group: "root"
-              mode: "755"
-            /var/www/wences/index.html:
-              content: |
-                <html>
-                  <head>
-                    <title> Ubuntu rocks! </title>
-                  </head>
-                  <body>
-                    <p> I'm running this website on an Ubuntu Server server!
-                  </body>
-                </html>
-          services:
-            apache2:
-              enabled: true
-              ensureRunning: true
-          commands:
-            command: "a2ensite your_domain.conf"
-            command: "sudo a2dissite 000-default.conf"
     Properties:
       InstanceType: t3.micro
-      ImageId: !FindInMap [ RegionMap, !Ref AWS::Region, AmiUbuntu2204 ]
+      ImageId: !FindInMap [ RegionMap, !Ref AWS::Region, AmiAmazonLinux2 ]
       KeyName: !Ref KeyName
       SecurityGroups:
         - !Ref WebServerSecurityGroup
@@ -56,8 +28,11 @@ Resources:
         Fn::Base64:
           !Sub |
             #!/bin/bash
-            apt update -y aws-cfn-bootstrap
-            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region}
+            yum update -y
+            yum install -y httpd.x86_64
+            systemctl start httpd.service
+            systemctl enable httpd.service
+            echo "Hello World from $(hostname -f)" > /var/www/html/index.html
       Tags:
         - Key: Name
           Value: !Ref NameOfService
