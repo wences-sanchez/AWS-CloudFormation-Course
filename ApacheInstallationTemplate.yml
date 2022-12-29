@@ -74,4 +74,6 @@ Resources:
           IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-
+Outputs:
+  ServerDns:
+    Value: !GetAtt MyEC2Instance.PublicDnsName
