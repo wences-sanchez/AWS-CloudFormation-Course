@@ -10,6 +10,7 @@ Mappings:
   RegionMap:
     us-east-1:
       AmiUbuntu2204: ami-06878d265978313ca
+      AmiAmazonLinux2: ami-0b5eea76982371e91
 
 Resources:
   MyEC2Instance:
@@ -44,7 +45,7 @@ Resources:
             command: "sudo a2dissite 000-default.conf"
     Properties:
       InstanceType: t3.micro
-      ImageId: !FindInMap [ RegionMap, !Ref AWS::Region, AmiUbuntu2204 ]
+      ImageId: !FindInMap [ RegionMap, !Ref AWS::Region, AmiAmazonLinux2 ]
       KeyName: !Ref KeyName
       SecurityGroups:
         - !Ref WebServerSecurityGroup
