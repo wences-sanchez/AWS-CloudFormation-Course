@@ -11,50 +11,53 @@ Mappings:
     us-east-1:
       AmiUbuntu2204: ami-06878d265978313ca
       AmiAmazonLinux2: ami-0b5eea76982371e91
+    eu-south-2:
+      AmiUbuntu2204: ami-06a35994aaed77af8
+      AmiAmazonLinux2: ami-0da857776d374a2fe
 
 Resources:
   MyEC2Instance:
     Type: AWS::EC2::Instance
-#    Metadata:
-#      AWS::CloudFormation::Init:
-#        config:
-#          packages:
-#            apt:
-#              httpd: []
-#          files:
-#            /var/www/wences/:
-#              owner: "root"
-#              group: "root"
-#              mode: "755"
-#            /var/www/wences/index.html:
-#              content: |
-#                <html>
-#                  <head>
-#                    <title> Ubuntu rocks! </title>
-#                  </head>
-#                  <body>
-#                    <p> I'm running this website on an Ubuntu Server server!
-#                  </body>
-#                </html>
-#          services:
-#            apache2:
-#              enabled: true
-#              ensureRunning: true
-#          commands:
-#            command: "a2ensite your_domain.conf"
-#            command: "sudo a2dissite 000-default.conf"
+    Metadata:
+      AWS::CloudFormation::Init:
+        config:
+          packages:
+            apt:
+              apache2: []
+          files:
+            /var/www/wences/:
+              owner: "root"
+              group: "root"
+              mode: "755"
+            /var/www/wences/index.html:
+              content: |
+                <html>
+                  <head>
+                    <title> Ubuntu rocks! </title>
+                  </head>
+                  <body>
+                    <p> I'm running this website on an Ubuntu Server server!
+                  </body>
+                </html>
+          services:
+            apache2:
+              enabled: true
+              ensureRunning: true
+          commands:
+            command: "a2ensite your_domain.conf"
+            command: "sudo a2dissite 000-default.conf"
     Properties:
       InstanceType: t3.micro
-      ImageId: !FindInMap [ RegionMap, !Ref AWS::Region, AmiAmazonLinux2 ]
+      ImageId: !FindInMap [ RegionMap, !Ref AWS::Region, AmiUbuntu2204 ]
       KeyName: !Ref KeyName
       SecurityGroups:
         - !Ref WebServerSecurityGroup
       UserData:
-        Fn::Base64: !Sub |
-            #!/bin/bash -xe
-            touch ~/existo.tmp
-#            yum update -y httpd aws-cfn-bootstrap
-#            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region}
+        Fn::Base64:
+          !Sub |
+            #!/bin/bash
+            apt update -y aws-cfn-bootstrap
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region}
       Tags:
         - Key: Name
           Value: !Ref NameOfService
